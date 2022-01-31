@@ -5,7 +5,7 @@ import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 
 function App() {
-  return <Register />;
+  return <Home />;
 }
 
 export default App;
