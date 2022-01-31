@@ -133,7 +133,7 @@ export const Posts = [
   },
   {
     id: "10",
-    desc: "fork I'm going without you ",
+    desc: "folk I'm going without you ",
     photo: "assets/post/10.jpg",
     date: "5 mins ago",
     userId: 10,

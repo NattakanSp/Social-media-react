@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Post.css";
 import { MoreVert, Recommend, Favorite } from "@mui/icons-material";
 import { Users } from "../../dummyData";
 
 function Post({ post }) {
+  const [like, setLike] = useState(post.like);
+  const [isLike, setIsLike] = useState(false);
+  const handleLike = () => {
+    setLike(isLike ? like - 1 : like + 1);
+    setIsLike(!isLike);
+  };
+
   return (
     <>
       <div className="post">
@@ -28,9 +35,9 @@ function Post({ post }) {
           </div>
           <div className="postBottom">
             <div className="postBottomeLeft">
-              <Recommend className="likeIcon" htmlColor="blue" />
-              <Favorite className="likeIcon" htmlColor="red" />
-              <span className="postBottomCounter">{post.like} people like this</span>
+              <Recommend className="likeIcon" htmlColor="blue" onClick={handleLike} />
+              <Favorite className="likeIcon" htmlColor="red" onClick={handleLike} />
+              <span className="postBottomCounter">{like} people like this</span>
             </div>
             <div className="postBottomRight">
               <span className="postCommentText">{post.comment} comments</span>

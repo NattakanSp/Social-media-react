@@ -1,11 +1,13 @@
 import React from "react";
 import "./Sidebar.css";
 import { RssFeed, Chat, PlayCircle, Group, Bookmark, Help, Work, Event, School } from "@mui/icons-material";
+import CloseFriend from "../closeFriend/CloseFriend";
+import { Users } from "../../dummyData";
 
 function Sidebar() {
   return (
     <>
-      <div className="sidebar sticky">
+      <div className="sidebar">
         <div className="sidebarWrapper">
           <ul className="sidebarList">
             <li className="sidebarListItem">
@@ -47,66 +49,9 @@ function Sidebar() {
             <button className="sidebarButton">Show more</button>
             <hr className="sidebarHr" />
             <ul className="sidebarFriendList">
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
-              <li className="sidebarFriend">
-                <img src="/assets/person/8.jpg" alt="" className="sidebarFriendImg" />
-                <span className="sidebarFriendName">John Doe</span>
-              </li>
+              {Users.map((u) => (
+                <CloseFriend key={u.id} profile={u.profilePicture} username={u.username} />
+              ))}
             </ul>
           </ul>
         </div>
