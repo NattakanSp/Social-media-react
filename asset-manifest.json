@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/NattakanSp/Social-media-react/static/css/main.9747a27e.css",
-    "main.js": "/NattakanSp/Social-media-react/static/js/main.a6328c61.js",
-    "index.html": "/NattakanSp/Social-media-react/index.html",
-    "main.9747a27e.css.map": "/NattakanSp/Social-media-react/static/css/main.9747a27e.css.map",
-    "main.a6328c61.js.map": "/NattakanSp/Social-media-react/static/js/main.a6328c61.js.map"
+    "main.css": "/Social-media-react/static/css/main.9747a27e.css",
+    "main.js": "/Social-media-react/static/js/main.a6328c61.js",
+    "index.html": "/Social-media-react/index.html",
+    "main.9747a27e.css.map": "/Social-media-react/static/css/main.9747a27e.css.map",
+    "main.a6328c61.js.map": "/Social-media-react/static/js/main.a6328c61.js.map"
   },
   "entrypoints": [
     "static/css/main.9747a27e.css",
