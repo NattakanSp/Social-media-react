@@ -1,24 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const res = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (res.ok) {
+      const userData = await res.json();
+      localStorage.setItem("user", JSON.stringify(userData));
+      navigate("/social-media/profile"); // redirect ไปหน้า profile
+    }
+  };
+
   return (
-    <div className="login">
-      <div className="loginWrapper">
-        <div className="loginLeft">
-          <h3 className="loginLogo">Natsri Social</h3>
-          <span className="loginDesc">connect with friends and the world around you on Natsri Social</span>
-        </div>
-        <div className="loginRight">
-          <div className="loginBox">
-            <input placeholder="Email" className="loginInput" />
-            <input placeholder="Password" className="loginInput" />
-            <button className="loginButton">Log in</button>
-            <span className="loginForgot">Forgot Password</span>
-            <button className="loginRegisterButton">Create a New Account</button>
-          </div>
-        </div>
-      </div>
+    <div className="loginPage">
+      <form className="loginForm" onSubmit={handleLogin}>
+        <h2 className="loginTitle">Login</h2>
+        <input className="loginInput" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input
+          className="loginInput"
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button className="loginButton" type="submit">
+          Login
+        </button>
+      </form>
     </div>
   );
 }

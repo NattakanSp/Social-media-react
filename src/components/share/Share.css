@@ -1,60 +1,149 @@
 .share {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(23, 117, 238, 0.08);
+  padding: 18px 20px 14px 20px;
+  margin-bottom: 20px;
   width: 100%;
-  height: 170px;
-  border-radius: 10px;
-  -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
-  box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
+  max-width: 500px;
+  margin-left: 0;
+  margin-right: auto;
+  margin-left: auto;
+  box-sizing: border-box;
 }
-.shareWrapper {
-  padding: 10px;
+
+.shareForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
+
+.shareTop {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
 .shareProfileImg {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 10px;
+  border: 1.5px solid #eee;
 }
+
+.shareInputs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
 .shareInput {
-  border: none;
-  width: 80%;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 7px;
+  padding: 7px 12px;
+  font-size: 15px;
+  background: #f8fafd;
+  margin-bottom: 2px;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(23, 117, 238, 0.03);
 }
+
 .shareInput:focus {
   outline: none;
+  border: 1.5px solid #1775ee;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(23, 117, 238, 0.08);
 }
-.shareHr {
-  margin: 20px;
+.shareTextarea {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+  border-radius: 7px;
+  padding: 7px 12px;
+  font-size: 15px;
+  background: #f8fafd;
+  min-height: 38px;
+  resize: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(23, 117, 238, 0.03);
 }
+
+.shareTextarea:focus {
+  outline: none;
+  border: 1.5px solid #1775ee;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(23, 117, 238, 0.08);
+}
+
+.shareImgContainer {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.shareImg {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 7px;
+}
+
+.shareImgRemove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 15px;
+  color: #1775ee;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(23, 117, 238, 0.08);
+}
+
+.shareImgRemove:focus {
+  outline: 2px solid #1775ee;
+  outline-offset: 2px;
+}
+
 .shareBottom {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 2px;
 }
-.shareOptions {
-  display: flex;
-  margin-left: 20px;
-}
+
 .shareOption {
   display: flex;
   align-items: center;
-  margin-right: 15px;
   cursor: pointer;
+  gap: 6px;
+  font-size: 15px;
 }
-.shareIcon {
-  font-style: 18px;
-  margin-right: 3px;
-}
-.shareOptionText {
-  font-size: 14px;
-  font-weight: 500;
-}
+
 .shareButton {
+  padding: 8px 22px;
   border: none;
-  padding: 7px;
-  border-radius: 5px;
-  background-color: rgb(48, 138, 223);
-  font-weight: 500;
-  margin-right: 20px;
+  border-radius: 7px;
+  background-color: #1775ee;
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
-  color: white;
+  transition: background 0.2s;
+}
+
+.shareButton:hover {
+  background-color: #125ecb;
 }

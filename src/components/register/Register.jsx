@@ -1,24 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Register.css";
 
 function Register() {
-  return (
-    <div className="register">
-      <div className="registerWrapper">
-        <div className="registerLeft">
-          <h3 className="registerLogo">Natsri Social</h3>
-          <span className="registerDesc">connect with friends and the world around you on Natsri Social</span>
-        </div>
-        <div className="registerRight">
-          <div className="registerBox">
-            <input placeholder="Email" className="registerInput" />
-            <input placeholder="Password" className="registerInput" />
-            <button className="registerButton">Sign Up</button>
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-            <button className="registerButton">Log in into your Account</button>
-          </div>
-        </div>
-      </div>
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const res = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      navigate("/social-media/login"); // redirect ไปหน้า login
+    } else {
+      alert(data.error);
+    }
+  };
+
+  return (
+    <div className="registerPage">
+      <form className="registerForm" onSubmit={handleRegister}>
+        <h2 className="registerTitle">Sign Up</h2>
+        <input className="registerInput" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input
+          className="registerInput"
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button className="registerButton" type="submit">
+          Sign Up
+        </button>
+      </form>
     </div>
   );
 }

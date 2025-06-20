@@ -1,8 +1,22 @@
 import React from "react";
 import "./Topbar.css";
 import { Search, Person, Chat, Notifications } from "@mui/icons-material";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Topbar() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleProfileClick = () => {
+    if (location.pathname === "/social-media/profile") {
+      navigate("/social-media/edit-profile");
+    } else {
+      navigate("/social-media/profile");
+    }
+  };
+
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
@@ -11,7 +25,7 @@ function Topbar() {
       <div className="topbarCenter">
         <div className="searchBar">
           <Search className="searchIcon" />
-          <input placeholder="search for friend, post, video here" className="searchInput"></input>
+          <input placeholder="search for friend, post, video here" className="searchInput" />
         </div>
       </div>
       <div className="topbarRight">
@@ -33,7 +47,13 @@ function Topbar() {
             <span className="topbarIconBadge">3</span>
           </div>
         </div>
-        <img src="/assets/person/2.png" alt="profile" className="topbarImg"></img>
+        <img
+          src={user?.profilePicture ? `http://localhost:5000${user.profilePicture}` : "/assets/person/2.png"}
+          alt="profile"
+          className="topbarImg"
+          style={{ cursor: "pointer" }}
+          onClick={handleProfileClick}
+        />
       </div>
     </div>
   );

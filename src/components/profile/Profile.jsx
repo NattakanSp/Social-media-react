@@ -6,6 +6,8 @@ import Sidebar from "../sidebar/Sidebar";
 import Topbar from "../topbar/Topbar";
 
 function Profile() {
+  const user = JSON.parse(localStorage.getItem("user") || "null");
+
   return (
     <>
       <Topbar />
@@ -15,15 +17,21 @@ function Profile() {
           <div className="profileRightTop">
             <div className="profileCover">
               <img className="profileCoverImg" src="assets/post/4.jpg" alt="" />
-              <img className="profileUserImg" src="assets/person/10.jpg" alt="" />
+              <img
+                className="profileUserImg"
+                src={user?.profilePicture ? `http://localhost:5000${user.profilePicture}` : "assets/person/10.jpg"}
+                alt=""
+              />
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">Hunter Payne</h4>
-              <span className="profileInfoDesc">Hello Friends!!!</span>
+              <h4 className="profileInfoName">{user?.username || "Username"}</h4>
+              <span className="profileInfoDesc">{user?.bio || "About me..."}</span>
             </div>
           </div>
           <div className="profileRightBottom">
-            <Feed />
+            <div className="profileFeedWrapper">
+              <Feed userId={user._id} />
+            </div>
             <Rightbar profile />
           </div>
         </div>
