@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Post.css";
 import { MoreVert, Edit, Delete, Recommend, Favorite } from "@mui/icons-material";
 
@@ -9,6 +9,19 @@ function Post({ post, onUpdate, onDelete }) {
   const [editing, setEditing] = useState(false);
   const [editDesc, setEditDesc] = useState(post.desc);
   const [editFile, setEditFile] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    async function fetchUser() {
+      const id = typeof post.userId === "string" ? post.userId : post.userId?._id;
+      if (id) {
+        const res = await fetch(`http://localhost:5000/api/users/${id}`);
+        const data = await res.json();
+        setUser(data);
+      }
+    }
+    fetchUser();
+  }, [post.userId]);
 
   const handleLike = () => {
     setLike(isLike ? like - 1 : like + 1);
@@ -51,8 +64,18 @@ function Post({ post, onUpdate, onDelete }) {
       <div className="postWrapper">
         <div className="postTop">
           <div className="postTopLeft">
-            <img src={post.userId?.profilePicture || "/assets/person/default.jpg"} alt="" className="postProfileImg" />
-            <span className="postUsername">{post.userId?.username || "Unknown"}</span>
+            <img
+              src={
+                user?.profilePicture
+                  ? user.profilePicture.startsWith("http")
+                    ? user.profilePicture
+                    : `http://localhost:5000${user.profilePicture}`
+                  : "/assets/person/default.jpg"
+              }
+              alt=""
+              className="postProfileImg"
+            />
+            <span className="postUsername">{user?.username || "Unknown"}</span>
             <span className="postDate">
               {post.date || (post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "")}
             </span>
@@ -86,7 +109,6 @@ function Post({ post, onUpdate, onDelete }) {
                 onChange={(e) => setEditFile(e.target.files[0])}
                 style={{ margin: "10px 0" }}
               />
-              {/* รูป preview ตอน edit */}
               {(editFile || post.photo) && (
                 <img
                   src={

@@ -25,12 +25,14 @@
   height: 220px;
   position: relative;
   background: linear-gradient(120deg, #e3f0ff 0%, #f9f9f9 100%);
+  border-radius: 0 0 16px 16px;
 }
 
 .profileCoverImg {
   width: 100%;
   height: 220px;
   object-fit: cover;
+  border-radius: 0 0 16px 16px;
   filter: brightness(0.95);
   position: absolute;
   left: 0;
@@ -47,20 +49,16 @@
   left: 50%;
   bottom: -60px;
   transform: translateX(-50%);
-  border: 1px solid #2b0a0a;
+  border: 6px solid #fff;
   background: #fff;
+  box-shadow: 0 4px 16px rgba(23, 117, 238, 0.13);
   z-index: 2;
 }
 
 .profileInfo {
-  margin-top: 0;
+  margin-top: 70px;
   text-align: center;
   padding-bottom: 16px;
-  position: relative;
-  z-index: 1;
-  overflow: visible;
-  max-width: 100%;
-  padding-top: 40px;
 }
 
 .profileInfoName {
@@ -106,22 +104,35 @@
   .profile {
     flex-direction: column;
   }
+  .sidebar {
+    display: none !important;
+  }
+  .rightbar {
+    display: none !important;
+  }
+  .profileRight {
+    width: 100%;
+    flex: unset;
+  }
   .profileRightBottom {
     flex-direction: column;
     gap: 0;
-    margin-top: 30px;
-  }
-  .profileUserImg {
-    width: 80px;
-    height: 80px;
-    bottom: -40px;
-  }
-  .profileInfo {
-    margin-top: 0;
-    padding-top: 40px;
+    margin-top: 24px;
   }
   .profileFeedWrapper,
   .share {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .profileRightTop,
+  .profileCover,
+  .profileCoverImg {
+    border-radius: 0;
+  }
+  .profileInfo {
+    margin-top: 24px;
+    padding-bottom: 10px;
   }
 }

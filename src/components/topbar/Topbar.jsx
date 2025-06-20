@@ -20,7 +20,7 @@ function Topbar() {
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
-        <span className="logo">Natsri social</span>
+        <span className="logo">Social media</span>
       </div>
       <div className="topbarCenter">
         <div className="searchBar">

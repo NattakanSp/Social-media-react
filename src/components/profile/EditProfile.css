@@ -80,3 +80,66 @@
 .edit-profile-btn:hover {
   background: #125ecb;
 }
+.edit-profile-img-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.edit-profile-img-preview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #1976d2;
+  box-shadow: 0 2px 8px rgba(23, 117, 238, 0.13);
+  transition: filter 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  filter: brightness(0.95);
+  background: #f8fafd;
+  display: block;
+}
+
+.edit-profile-img-section label::after {
+  content: "Edit";
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1976d2;
+  color: #fff;
+  font-size: 13px;
+  padding: 3px 14px;
+  border-radius: 12px;
+  opacity: 0.92;
+  pointer-events: none;
+  transition: background 0.2s;
+}
+
+.edit-profile-img-section label:hover .edit-profile-img-preview {
+  filter: brightness(0.85);
+  box-shadow: 0 4px 16px rgba(23, 117, 238, 0.25);
+}
+
+.edit-profile-img-section label::after {
+  content: "Edit";
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1976d2;
+  color: #fff;
+  font-size: 13px;
+  padding: 3px 14px;
+  border-radius: 12px;
+  opacity: 0.92;
+  pointer-events: none;
+  transition: background 0.2s;
+}
+
+.edit-profile-img-section label:hover .edit-profile-img-preview {
+  filter: brightness(0.85);
+  box-shadow: 0 4px 16px rgba(23, 117, 238, 0.25);
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Feed from "../feed/Feed";
 import "./Profile.css";
 import Rightbar from "../rightbar/Rightbar";
@@ -6,7 +6,15 @@ import Sidebar from "../sidebar/Sidebar";
 import Topbar from "../topbar/Topbar";
 
 function Profile() {
-  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user") || "null"));
+
+  useEffect(() => {
+    const handleStorage = () => {
+      setUser(JSON.parse(localStorage.getItem("user") || "null"));
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
   return (
     <>
@@ -30,7 +38,7 @@ function Profile() {
           </div>
           <div className="profileRightBottom">
             <div className="profileFeedWrapper">
-              <Feed userId={user._id} />
+              <Feed userId={user?._id} />
             </div>
             <Rightbar profile />
           </div>
