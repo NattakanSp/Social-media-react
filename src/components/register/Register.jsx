@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
+import { useAuth } from "../../context/AuthContext";
 
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -16,9 +18,11 @@ function Register() {
     });
     const data = await res.json();
     if (res.ok) {
-      navigate("/social-media/login"); // redirect ไปหน้า login
+      // สมัครเสร็จ login อัตโนมัติ
+      login(data);
+      navigate("/social-media/profile");
     } else {
-      alert(data.error);
+      alert(data.error || "Registration failed");
     }
   };
 

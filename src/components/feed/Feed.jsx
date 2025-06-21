@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./Feed.css";
 import Share from "../share/Share.jsx";
 import Post from "../post/Post.jsx";
+import { useAuth } from "../../context/AuthContext";
 
 function Feed({ userId }) {
   const [posts, setPosts] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
-    const url = userId
-      ? `http://localhost:5000/api/posts/user/${userId}` // ถ้ามี userId (หน้าโปรไฟล์)
-      : "http://localhost:5000/api/posts"; // ถ้าไม่มี (หน้าหลัก)
+    const url = userId ? `http://localhost:5000/api/posts/user/${userId}` : "http://localhost:5000/api/posts";
     fetch(url)
       .then((res) => res.json())
       .then((data) => setPosts(data))
@@ -29,7 +29,7 @@ function Feed({ userId }) {
       <div className="feedWrapper">
         <Share />
         {posts.map((post) => (
-          <Post key={post._id} post={post} onUpdate={handleUpdate} onDelete={handleDelete} />
+          <Post key={post._id} post={post} onUpdate={handleUpdate} onDelete={handleDelete} currentUser={user} />
         ))}
       </div>
     </div>

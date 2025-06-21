@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Post.css";
 import { MoreVert, Edit, Delete, Recommend, Favorite } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
-function Post({ post, onUpdate, onDelete }) {
+function Post({ post, onUpdate, onDelete, currentUser }) {
   const [like, setLike] = useState(post.like || 0);
   const [isLike, setIsLike] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -11,6 +12,12 @@ function Post({ post, onUpdate, onDelete }) {
   const [editFile, setEditFile] = useState(null);
   const [user, setUser] = useState(null);
 
+  // For comment actions menu
+  const [openMenuCommentId, setOpenMenuCommentId] = useState(null);
+
+  const navigate = useNavigate();
+
+  // Fetch user info
   useEffect(() => {
     async function fetchUser() {
       const id = typeof post.userId === "string" ? post.userId : post.userId?._id;
@@ -22,6 +29,22 @@ function Post({ post, onUpdate, onDelete }) {
     }
     fetchUser();
   }, [post.userId]);
+
+  // Fetch comments
+  const [comments, setComments] = useState([]);
+  useEffect(() => {
+    async function fetchComments() {
+      if (!post._id) return;
+      const res = await fetch(`http://localhost:5000/api/comments/post/${post._id}`);
+      const allComments = await res.json();
+      setComments(allComments);
+    }
+    fetchComments();
+  }, [post._id]);
+
+  const [commentInput, setCommentInput] = useState("");
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingCommentText, setEditingCommentText] = useState("");
 
   const handleLike = () => {
     setLike(isLike ? like - 1 : like + 1);
@@ -59,6 +82,57 @@ function Post({ post, onUpdate, onDelete }) {
     if (onUpdate) onUpdate(updated);
   };
 
+  // Add comment
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    if (!commentInput.trim() || !currentUser || !currentUser._id) return;
+    await fetch("http://localhost:5000/api/comments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ postId: post._id, userId: currentUser._id, text: commentInput }),
+    });
+    // Fetch comments again after adding
+    const res = await fetch(`http://localhost:5000/api/comments/post/${post._id}`);
+    const allComments = await res.json();
+    setComments(allComments);
+    setCommentInput("");
+  };
+
+  // Delete comment
+  const handleDeleteComment = async (commentId) => {
+    setOpenMenuCommentId(null);
+    if (!window.confirm("Delete this comment?")) return;
+    await fetch(`http://localhost:5000/api/comments/${commentId}`, {
+      method: "DELETE",
+    });
+    // Fetch comments again after deleting
+    const res = await fetch(`http://localhost:5000/api/comments/post/${post._id}`);
+    const allComments = await res.json();
+    setComments(allComments);
+  };
+
+  // Edit comment
+  const handleEditComment = (comment) => {
+    setEditingCommentId(comment._id);
+    setEditingCommentText(comment.text);
+    setOpenMenuCommentId(null);
+  };
+
+  const handleEditCommentSubmit = async (e) => {
+    e.preventDefault();
+    await fetch(`http://localhost:5000/api/comments/${editingCommentId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: editingCommentText }),
+    });
+    // Fetch comments again after editing
+    const res = await fetch(`http://localhost:5000/api/comments/post/${post._id}`);
+    const allComments = await res.json();
+    setComments(allComments);
+    setEditingCommentId(null);
+    setEditingCommentText("");
+  };
+
   return (
     <div className="post">
       <div className="postWrapper">
@@ -75,22 +149,32 @@ function Post({ post, onUpdate, onDelete }) {
               alt=""
               className="postProfileImg"
             />
-            <span className="postUsername">{user?.username || "Unknown"}</span>
+            <span
+              className="postUsername"
+              style={{ cursor: "pointer", color: "#1775ee" }}
+              onClick={() => user?._id && navigate(`/social-media/profile/${user._id}`)}
+            >
+              {user?.username || "Unknown"}
+            </span>
             <span className="postDate">
               {post.date || (post.createdAt ? new Date(post.createdAt).toLocaleDateString() : "")}
             </span>
           </div>
           <div className="postTopRight" style={{ position: "relative" }}>
-            <MoreVert onClick={handleMenu} style={{ cursor: "pointer" }} />
-            {showMenu && (
-              <div className="postMenu">
-                <div className="postMenuItem" onClick={handleEdit}>
-                  <Edit fontSize="small" style={{ marginRight: 6 }} /> Edit
-                </div>
-                <div className="postMenuItem" onClick={handleDelete}>
-                  <Delete fontSize="small" style={{ marginRight: 6, color: "#e53935" }} /> Delete
-                </div>
-              </div>
+            {currentUser && currentUser._id === post.userId && (
+              <>
+                <MoreVert onClick={handleMenu} style={{ cursor: "pointer" }} />
+                {showMenu && (
+                  <div className="postMenu">
+                    <div className="postMenuItem" onClick={handleEdit}>
+                      <Edit fontSize="small" style={{ marginRight: 6 }} /> Edit
+                    </div>
+                    <div className="postMenuItem" onClick={handleDelete}>
+                      <Delete fontSize="small" style={{ marginRight: 6, color: "#e53935" }} /> Delete
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -147,8 +231,67 @@ function Post({ post, onUpdate, onDelete }) {
             <span className="postBottomCounter">{like} people like this</span>
           </div>
           <div className="postBottomRight">
-            <span className="postCommentText">{post.comment || 0} comments</span>
+            <span className="postCommentText">{comments.length} comments</span>
           </div>
+        </div>
+        {/* Comments Section */}
+        <div className="postComments">
+          <form onSubmit={handleAddComment} className="commentForm">
+            <input
+              type="text"
+              value={commentInput}
+              onChange={(e) => setCommentInput(e.target.value)}
+              placeholder={currentUser ? "Write a comment..." : "Login to comment"}
+              className="commentInput"
+              disabled={!currentUser}
+            />
+            <button type="submit" className="commentBtn" disabled={!currentUser}>
+              Add
+            </button>
+          </form>
+          <ul className="commentList">
+            {comments.map((comment) => (
+              <li key={comment._id} className="commentItem" style={{ position: "relative" }}>
+                {editingCommentId === comment._id ? (
+                  <form onSubmit={handleEditCommentSubmit} className="editCommentForm">
+                    <input
+                      type="text"
+                      value={editingCommentText}
+                      onChange={(e) => setEditingCommentText(e.target.value)}
+                      className="editCommentInput"
+                    />
+                    <button type="submit" className="commentBtn">
+                      Save
+                    </button>
+                    <button type="button" className="commentBtn" onClick={() => setEditingCommentId(null)}>
+                      Cancel
+                    </button>
+                  </form>
+                ) : (
+                  <>
+                    <span className="commentText">{comment.text}</span>
+                    <button
+                      className="commentActionsMenuBtn"
+                      type="button"
+                      onClick={() => setOpenMenuCommentId(openMenuCommentId === comment._id ? null : comment._id)}
+                    >
+                      <MoreVert fontSize="small" />
+                    </button>
+                    {openMenuCommentId === comment._id && (
+                      <div className="commentActionsMenu">
+                        <div className="commentActionsMenuItem" onClick={() => handleEditComment(comment)}>
+                          <Edit fontSize="small" style={{ marginRight: 4 }} /> Edit
+                        </div>
+                        <div className="commentActionsMenuItem" onClick={() => handleDeleteComment(comment._id)}>
+                          <Delete fontSize="small" style={{ marginRight: 4, color: "#e53935" }} /> Delete
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

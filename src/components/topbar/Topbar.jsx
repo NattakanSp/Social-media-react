@@ -1,19 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Topbar.css";
 import { Search, Person, Chat, Notifications } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function Topbar() {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user);
+  const [friendRequestCount, setFriendRequestCount] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
 
+  useEffect(() => {
+    async function fetchFriendRequests() {
+      if (!user?._id) return;
+      try {
+        const res = await fetch(`http://localhost:5000/api/friends/requests/${user._id}`);
+        const data = await res.json();
+        setFriendRequestCount(data?.length || 0);
+      } catch {
+        setFriendRequestCount(0);
+      }
+    }
+    fetchFriendRequests();
+  }, [user?._id]);
+
   const handleProfileClick = () => {
-    if (location.pathname === "/social-media/profile") {
+    if (location.pathname === `/social-media/profile/${user?._id}`) {
       navigate("/social-media/edit-profile");
     } else {
-      navigate("/social-media/profile");
+      navigate(`/social-media/profile/${user?._id}`);
     }
   };
 
@@ -36,7 +50,7 @@ function Topbar() {
         <div className="topbarIcons">
           <div className="topbarIconItem">
             <Person />
-            <span className="topbarIconBadge">1</span>
+            <span className="topbarIconBadge">{friendRequestCount}</span>
           </div>
           <div className="topbarIconItem">
             <Chat />

@@ -4,15 +4,17 @@ import Profile from "./components/profile/Profile";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import EditProfile from "./components/profile/EditProfile";
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 
 function App() {
-  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")));
+  const { user, setUser } = useAuth();
+
   const handleUserUpdate = (updatedUser) => {
     setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
   };
+
   return (
     <Router>
       <Routes>
